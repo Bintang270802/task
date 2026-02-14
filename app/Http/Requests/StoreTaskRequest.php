@@ -7,7 +7,7 @@ use Illuminate\Foundation\Http\FormRequest;
 /**
  * Store Task Request
  * 
- * Validates and sanitizes input for creating a new task
+ * Validation rules for creating a task
  */
 class StoreTaskRequest extends FormRequest
 {
@@ -16,8 +16,6 @@ class StoreTaskRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        // Add authorization logic here if needed
-        // For now, allow all requests
         return true;
     }
 

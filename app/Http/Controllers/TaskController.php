@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Log;
 /**
  * TaskController
  * 
- * Handles CRUD operations for tasks with enhanced security
+ * Handles CRUD operations for tasks
  */
 class TaskController extends Controller
 {

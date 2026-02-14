@@ -7,7 +7,7 @@ use Illuminate\Foundation\Http\FormRequest;
 /**
  * Update Task Request
  * 
- * Validates and sanitizes input for updating an existing task
+ * Validation rules for updating a task
  */
 class UpdateTaskRequest extends FormRequest
 {
@@ -16,8 +16,6 @@ class UpdateTaskRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        // Add authorization logic here if needed
-        // For example: return $this->user()->can('update', $this->route('task'));
         return true;
     }
 

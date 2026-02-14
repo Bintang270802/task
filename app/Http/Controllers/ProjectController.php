@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Log;
 /**
  * ProjectController
  * 
- * Handles CRUD operations for projects with enhanced security
+ * Handles CRUD operations for projects
  */
 class ProjectController extends Controller
 {

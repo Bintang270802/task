@@ -8,7 +8,7 @@ use Illuminate\Validation\Rule;
 /**
  * Store Project Request
  * 
- * Validates and sanitizes input for creating a new project
+ * Validation rules for creating a project
  */
 class StoreProjectRequest extends FormRequest
 {

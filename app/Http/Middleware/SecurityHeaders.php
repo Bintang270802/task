@@ -9,8 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * Security Headers Middleware
  * 
- * Adds security headers to all HTTP responses to protect against
- * common web vulnerabilities
+ * Adds security headers to HTTP responses
  */
 class SecurityHeaders
 {
@@ -23,16 +22,16 @@ class SecurityHeaders
     {
         $response = $next($request);
 
-        // Prevent clickjacking attacks
+        // Clickjacking protection
         $response->headers->set('X-Frame-Options', 'SAMEORIGIN');
         
-        // Prevent MIME type sniffing
+        // MIME sniffing protection
         $response->headers->set('X-Content-Type-Options', 'nosniff');
         
-        // Enable XSS protection in older browsers
+        // XSS protection
         $response->headers->set('X-XSS-Protection', '1; mode=block');
         
-        // Content Security Policy - Restrict resource loading
+        // Content Security Policy
         $response->headers->set('Content-Security-Policy', 
             "default-src 'self'; " .
             "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net; " .
@@ -42,15 +41,15 @@ class SecurityHeaders
             "connect-src 'self' https://cdn.jsdelivr.net;"
         );
         
-        // Referrer Policy - Control referrer information
+        // Referrer policy
         $response->headers->set('Referrer-Policy', 'strict-origin-when-cross-origin');
         
-        // Permissions Policy - Control browser features
+        // Permissions policy
         $response->headers->set('Permissions-Policy', 
             'geolocation=(), microphone=(), camera=(), payment=()'
         );
         
-        // Strict Transport Security - Force HTTPS (only in production)
+        // HSTS (production only)
         if (app()->environment('production')) {
             $response->headers->set('Strict-Transport-Security', 
                 'max-age=31536000; includeSubDomains; preload'
