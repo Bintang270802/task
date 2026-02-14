@@ -234,73 +234,102 @@
 
 @push('scripts')
 <script>
-    // Character counter
-    const nameInput = document.getElementById('name');
-    const charCount = document.getElementById('charCount');
-    
-    function updateCharCount() {
-        const count = nameInput.value.length;
-        charCount.textContent = count;
+    // Wait for DOM to be fully loaded
+    document.addEventListener('DOMContentLoaded', function() {
+        // Character counter
+        const nameInput = document.getElementById('name');
+        const charCount = document.getElementById('charCount');
         
-        if (count > 240) {
-            charCount.parentElement.classList.add('text-warning');
-        } else {
-            charCount.parentElement.classList.remove('text-warning');
+        if (nameInput && charCount) {
+            function updateCharCount() {
+                const count = nameInput.value.length;
+                charCount.textContent = count;
+                
+                if (count > 240) {
+                    charCount.parentElement.classList.add('text-warning');
+                } else {
+                    charCount.parentElement.classList.remove('text-warning');
+                }
+            }
+            
+            nameInput.addEventListener('input', updateCharCount);
+            updateCharCount();
+            
+            // Form validation
+            nameInput.addEventListener('blur', function() {
+                if (this.value.trim().length > 0 && this.value.trim().length < 3) {
+                    this.classList.add('is-invalid');
+                } else {
+                    this.classList.remove('is-invalid');
+                }
+            });
         }
-    }
-    
-    nameInput.addEventListener('input', updateCharCount);
-    updateCharCount();
+    });
 
     // Go to Review Step
     function goToReview() {
-        const name = document.getElementById('name').value.trim();
+        const name = document.getElementById('name');
+        const projectSelect = document.getElementById('project_id');
+        const reviewName = document.getElementById('reviewName');
+        const reviewProject = document.getElementById('reviewProject');
+        const finalName = document.getElementById('finalName');
+        const finalProjectId = document.getElementById('finalProjectId');
+        const step1 = document.getElementById('step1');
+        const step2 = document.getElementById('step2');
         
-        if (!name) {
+        if (!name || !projectSelect || !reviewName || !reviewProject || !finalName || !finalProjectId || !step1 || !step2) {
+            console.error('Required elements not found');
+            return;
+        }
+        
+        const nameValue = name.value.trim();
+        
+        if (!nameValue) {
             alert('Please enter a task name');
-            document.getElementById('name').focus();
+            name.focus();
             return;
         }
 
-        if (name.length < 3) {
+        if (nameValue.length < 3) {
             alert('Task name must be at least 3 characters');
-            document.getElementById('name').focus();
+            name.focus();
             return;
         }
 
         // Get form data
-        const projectSelect = document.getElementById('project_id');
         const projectId = projectSelect.value;
         const projectName = projectSelect.options[projectSelect.selectedIndex].getAttribute('data-name');
 
         // Update review content
-        document.getElementById('reviewName').innerHTML = `<strong>${name}</strong>`;
+        reviewName.innerHTML = `<strong>${nameValue}</strong>`;
         
         if (projectId) {
-            document.getElementById('reviewProject').innerHTML = `
+            reviewProject.innerHTML = `
                 <span class="project-badge">
                     <i class="bi bi-folder"></i> ${projectName}
                 </span>
             `;
         } else {
-            document.getElementById('reviewProject').innerHTML = `
+            reviewProject.innerHTML = `
                 <span class="badge bg-secondary">No Project</span>
             `;
         }
 
         // Set hidden form values
-        document.getElementById('finalName').value = name;
-        document.getElementById('finalProjectId').value = projectId;
+        finalName.value = nameValue;
+        finalProjectId.value = projectId;
 
         // Update wizard steps
-        document.querySelector('[data-step="1"]').classList.remove('active');
-        document.querySelector('[data-step="1"]').classList.add('completed');
-        document.querySelector('[data-step="2"]').classList.add('active');
+        const wizardStep1 = document.querySelector('[data-step="1"]');
+        const wizardStep2 = document.querySelector('[data-step="2"]');
+        
+        if (wizardStep1 && wizardStep2) {
+            wizardStep1.classList.remove('active');
+            wizardStep1.classList.add('completed');
+            wizardStep2.classList.add('active');
+        }
 
         // Show/hide steps with animation
-        const step1 = document.getElementById('step1');
-        const step2 = document.getElementById('step2');
-        
         step1.style.animation = 'slideOutLeft 0.3s ease';
         setTimeout(() => {
             step1.style.display = 'none';
@@ -312,15 +341,24 @@
 
     // Go back to edit
     function goBackToEdit() {
-        // Update wizard steps
-        document.querySelector('[data-step="2"]').classList.remove('active');
-        document.querySelector('[data-step="1"]').classList.remove('completed');
-        document.querySelector('[data-step="1"]').classList.add('active');
-
-        // Show/hide steps with animation
         const step1 = document.getElementById('step1');
         const step2 = document.getElementById('step2');
+        const wizardStep1 = document.querySelector('[data-step="1"]');
+        const wizardStep2 = document.querySelector('[data-step="2"]');
         
+        if (!step1 || !step2) {
+            console.error('Step elements not found');
+            return;
+        }
+        
+        // Update wizard steps
+        if (wizardStep1 && wizardStep2) {
+            wizardStep2.classList.remove('active');
+            wizardStep1.classList.remove('completed');
+            wizardStep1.classList.add('active');
+        }
+
+        // Show/hide steps with animation
         step2.style.animation = 'slideOutRight 0.3s ease';
         setTimeout(() => {
             step2.style.display = 'none';
@@ -332,16 +370,27 @@
 
     // Submit directly for edit mode
     function submitDirectly() {
-        const name = document.getElementById('name').value.trim();
+        const name = document.getElementById('name');
+        const editName = document.getElementById('editName');
+        const editProjectId = document.getElementById('editProjectId');
+        const editForm = document.getElementById('editForm');
+        const projectSelect = document.getElementById('project_id');
         
-        if (!name || name.length < 3) {
+        if (!name || !editName || !editProjectId || !editForm || !projectSelect) {
+            console.error('Required form elements not found');
+            return;
+        }
+        
+        const nameValue = name.value.trim();
+        
+        if (!nameValue || nameValue.length < 3) {
             alert('Please enter a valid task name (at least 3 characters)');
             return;
         }
 
-        document.getElementById('editName').value = name;
-        document.getElementById('editProjectId').value = document.getElementById('project_id').value;
-        document.getElementById('editForm').submit();
+        editName.value = nameValue;
+        editProjectId.value = projectSelect.value;
+        editForm.submit();
     }
 
     // Final submit with loading state
@@ -349,8 +398,10 @@
     if (finalSubmitForm) {
         finalSubmitForm.addEventListener('submit', function() {
             const btn = document.getElementById('finalSubmitBtn');
-            btn.disabled = true;
-            btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Saving...';
+            if (btn) {
+                btn.disabled = true;
+                btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Saving...';
+            }
         });
     }
 
@@ -358,20 +409,12 @@
     document.addEventListener('keydown', function(e) {
         // Esc to cancel
         if (e.key === 'Escape') {
-            if (document.getElementById('step2').style.display === 'block') {
+            const step2 = document.getElementById('step2');
+            if (step2 && step2.style && step2.style.display === 'block') {
                 goBackToEdit();
             } else {
                 window.location.href = '{{ route("tasks.index") }}';
             }
-        }
-    });
-
-    // Form validation
-    nameInput.addEventListener('blur', function() {
-        if (this.value.trim().length > 0 && this.value.trim().length < 3) {
-            this.classList.add('is-invalid');
-        } else {
-            this.classList.remove('is-invalid');
         }
     });
 </script>
