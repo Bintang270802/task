@@ -49,6 +49,15 @@
             border-bottom: 3px solid var(--accent-color);
         }
 
+        .navbar-toggler {
+            border: 1px solid rgba(255,255,255,0.3);
+            padding: 0.5rem;
+        }
+
+        .navbar-toggler:focus {
+            box-shadow: 0 0 0 0.2rem rgba(255,255,255,0.25);
+        }
+
         .navbar-brand {
             font-family: 'Merriweather', serif;
             font-weight: 900;
@@ -70,6 +79,7 @@
             transition: all 0.2s ease;
             display: inline-block;
             border: 2px solid transparent;
+            text-align: center;
         }
 
         .nav-link-custom:hover {
@@ -665,11 +675,14 @@
         @media (max-width: 768px) {
             .page-header {
                 text-align: center;
+                padding: 1rem;
             }
 
             .page-title {
-                font-size: 1.5rem;
+                font-size: 1.25rem;
                 justify-content: center;
+                flex-direction: column;
+                gap: 0.5rem;
             }
 
             .task-card {
@@ -682,6 +695,150 @@
 
             .help-card {
                 margin-bottom: 1rem;
+            }
+
+            .wizard-steps {
+                padding: 1rem;
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .wizard-step-line {
+                width: 3px;
+                height: 60px;
+                margin: 0;
+                top: 0;
+            }
+
+            .wizard-step {
+                width: 100%;
+            }
+
+            .task-title {
+                font-size: 1rem;
+            }
+
+            .btn {
+                font-size: 0.875rem;
+                padding: 0.5rem 0.75rem;
+            }
+
+            .card-body {
+                padding: 1rem;
+            }
+
+            .container-main {
+                margin-top: 1rem;
+            }
+
+            .toast-notification {
+                min-width: 250px;
+                right: 10px;
+                top: 70px;
+            }
+
+            .nav-link-custom {
+                padding: 0.5rem 0.75rem;
+                font-size: 0.9rem;
+            }
+
+            .drag-hint {
+                font-size: 0.75rem;
+                padding: 0.25rem 0.5rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .navbar-brand {
+                font-size: 1.1rem;
+            }
+
+            .page-title {
+                font-size: 1.1rem;
+            }
+
+            .task-card {
+                padding: 0.75rem;
+            }
+
+            .task-title {
+                font-size: 0.95rem;
+            }
+
+            .project-badge {
+                font-size: 0.75rem;
+                padding: 0.25rem 0.5rem;
+            }
+
+            .btn-sm {
+                font-size: 0.75rem;
+                padding: 0.25rem 0.5rem;
+            }
+
+            .wizard-steps {
+                padding: 0.75rem;
+            }
+
+            .wizard-step-circle {
+                width: 40px;
+                height: 40px;
+                font-size: 1rem;
+            }
+
+            .wizard-step-label {
+                font-size: 0.85rem;
+            }
+
+            .form-label {
+                font-size: 0.9rem;
+            }
+
+            .form-control, .form-select {
+                font-size: 0.9rem;
+            }
+
+            .breadcrumb {
+                font-size: 0.85rem;
+            }
+
+            .help-card {
+                padding: 0.75rem;
+            }
+
+            .help-card h6 {
+                font-size: 0.9rem;
+            }
+
+            .help-card ul {
+                font-size: 0.85rem;
+            }
+
+            .toast-notification {
+                min-width: 200px;
+                font-size: 0.85rem;
+            }
+
+            .d-flex.gap-2 {
+                flex-direction: column;
+                gap: 0.5rem !important;
+            }
+
+            .d-flex.gap-2 .btn {
+                width: 100%;
+            }
+        }
+
+        @media (min-width: 769px) and (max-width: 992px) {
+            .container-main {
+                max-width: 900px;
+            }
+
+            .task-card {
+                padding: 1.1rem;
+            }
+
+            .wizard-steps {
+                padding: 1.5rem;
             }
         }
 
@@ -1044,24 +1201,29 @@
 </head>
 <body>
     <!-- Navbar -->
-    <nav class="navbar">
-        <div class="container-fluid px-4">
+    <nav class="navbar navbar-expand-md">
+        <div class="container-fluid px-3 px-md-4">
             <a class="navbar-brand" href="{{ route('tasks.index') }}">
-                <i class="bi bi-check2-square"></i> Task Manager
+                <i class="bi bi-check2-square"></i> <span class="d-none d-sm-inline">Task Manager</span><span class="d-inline d-sm-none">Tasks</span>
             </a>
-            <div class="d-flex gap-2">
-                <a href="{{ route('tasks.index') }}" class="nav-link-custom {{ request()->routeIs('tasks.*') ? 'active' : '' }}">
-                    <i class="bi bi-list-task"></i> Tasks
-                </a>
-                <a href="{{ route('projects.index') }}" class="nav-link-custom {{ request()->routeIs('projects.*') ? 'active' : '' }}">
-                    <i class="bi bi-folder"></i> Projects
-                </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" style="border: 1px solid rgba(255,255,255,0.3); color: white;">
+                <i class="bi bi-list" style="font-size: 1.5rem; color: white;"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <div class="d-flex flex-column flex-md-row gap-2 ms-auto mt-3 mt-md-0">
+                    <a href="{{ route('tasks.index') }}" class="nav-link-custom {{ request()->routeIs('tasks.*') ? 'active' : '' }}">
+                        <i class="bi bi-list-task"></i> Tasks
+                    </a>
+                    <a href="{{ route('projects.index') }}" class="nav-link-custom {{ request()->routeIs('projects.*') ? 'active' : '' }}">
+                        <i class="bi bi-folder"></i> Projects
+                    </a>
+                </div>
             </div>
         </div>
     </nav>
 
     <!-- Main Content -->
-    <div class="container container-main">
+    <div class="container container-main px-3 px-md-4">
         @if(session('success'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
                 <i class="bi bi-check-circle-fill me-2"></i> 

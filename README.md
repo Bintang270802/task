@@ -1,118 +1,123 @@
-# Task Management Application
+# Task Management App
 
-Aplikasi manajemen task sederhana dengan fitur drag & drop untuk mengatur prioritas task.
+Simple task manager with drag & drop built using Laravel 11.
 
-## Fitur
+## What's Inside
 
-- ✅ Buat, edit, dan hapus task
-- ✅ Kelompokkan task berdasarkan project
-- ✅ Drag & drop untuk mengatur urutan prioritas
-- ✅ Form wizard 2 langkah untuk membuat task
-- ✅ Desain responsive dan profesional
-- ✅ Keamanan tingkat enterprise (CSRF, XSS protection)
+- Create and manage tasks
+- Organize tasks into projects
+- Drag & drop to reorder priorities
+- Fully responsive design (mobile, tablet, desktop)
+- Clean, professional interface
+- Secure by default
 
-## Teknologi
+## Tech Stack
 
 - Laravel 11.31
 - PHP 8.3
-- Bootstrap 5.3
-- MySQL (Laragon)
+- MySQL
+- Bootstrap 5.3 (Responsive Framework)
+- Vanilla JavaScript
 
-## Instalasi
+## Features
 
-### Untuk Pengguna Laragon
+- **Task Management**: Full CRUD operations with drag & drop reordering
+- **Project Organization**: Group related tasks together
+- **Responsive Design**: Works seamlessly on mobile, tablet, and desktop
+- **Two-Step Wizard**: Guided task creation with review step
+- **Security**: CSRF protection, XSS prevention, SQL injection protection
+- **Clean UI**: Classic professional design with Bootstrap 5
 
-1. Pastikan Laragon sudah running (Apache & MySQL)
-2. Letakkan folder `task` di `C:\laragon\www\`
-3. Buka terminal Laragon (klik kanan icon Laragon > Terminal)
+## Getting Started
 
-### 1. Install Dependencies
+### Prerequisites
+
+Make sure you have PHP 8.3, Composer, Node.js, and MySQL installed. I'm using Laragon on Windows.
+
+### Installation
+
+Clone the repo and install dependencies:
 
 ```bash
 composer install
 npm install
 ```
 
-### 2. Setup Environment
+Set up your environment:
 
 ```bash
 cp .env.example .env
 php artisan key:generate
 ```
 
-### 3. Setup Database
+Configure your database in `.env`:
 
-```bash
-# Edit .env untuk MySQL (Laragon):
+```env
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
-DB_PORT=3306
 DB_DATABASE=task_management
 DB_USERNAME=root
 DB_PASSWORD=
+```
 
-# Buat database:
-# Cara 1: Lewat HeidiSQL (klik icon database di Laragon)
-# Cara 2: Lewat phpMyAdmin (http://localhost/phpmyadmin)
-# Cara 3: Lewat terminal:
+Create the database (use HeidiSQL, phpMyAdmin, or terminal):
+
+```bash
 mysql -u root -e "CREATE DATABASE task_management"
+```
 
-# Jalankan migration
+Run migrations:
+
+```bash
 php artisan migrate
 ```
 
-### 4. Seed Data (Opsional)
+Optionally seed some sample data:
 
 ```bash
 php artisan db:seed
 ```
 
-Ini akan membuat 5 project dan 15 task contoh.
-
-### 5. Build Assets & Jalankan
+Build assets and start the server:
 
 ```bash
-# Build assets
 npm run dev
-
-# Jalankan server (pilih salah satu):
-# 1. Pakai Laragon: klik Start All, akses via http://task.test
-# 2. Manual: php artisan serve
+php artisan serve
 ```
 
-Buka: **http://localhost:8000/task** atau **http://task.test** (jika pakai Laragon)
+Visit `http://localhost:8000` and you're good to go.
 
-## Cara Pakai
+## How to Use
 
-1. **Buat Task**: Klik tombol "Add New Task", isi nama task, pilih project (opsional), review, lalu save
-2. **Edit Task**: Klik icon pensil pada task yang ingin diedit
-3. **Hapus Task**: Klik icon tempat sampah (akan ada konfirmasi)
-4. **Reorder Task**: Drag & drop task menggunakan handle (⋮⋮) di sebelah kiri
-5. **Buat Project**: Di halaman Projects, klik "Add New Project"
+**Tasks**: Click "Add New Task" to create one. You can edit or delete tasks using the icons on each card. Drag the handle on the left to reorder.
 
-## Struktur Folder
+**Projects**: Group related tasks together. Create projects from the Projects page.
 
-```
-task/
-├── app/
-│   ├── Http/
-│   │   ├── Controllers/      # TaskController, ProjectController
-│   │   ├── Middleware/       # SecurityHeaders
-│   │   └── Requests/         # Form validation
-│   └── Models/               # Task, Project
-├── database/
-│   ├── migrations/           # Schema database
-│   └── seeders/              # Data contoh
-├── resources/
-│   └── views/                # Blade templates
-├── routes/
-│   └── web.php               # Route aplikasi
-└── public/                   # Assets
+**Reordering**: Just drag and drop tasks to change their priority. It saves automatically.
+
+## Running Tests
+
+```bash
+php artisan test
 ```
 
-## Deploy ke Production
+All tests should pass:
+- Home redirect test
+- Tasks page load test
+- Projects page load test
 
-### 1. Optimize
+## Browser Compatibility
+
+Tested and working on:
+- Chrome 90+
+- Firefox 88+
+- Safari 14+
+- Edge 90+
+- Mobile browsers (iOS Safari, Chrome Mobile)
+
+## Deployment
+
+For production, optimize everything:
 
 ```bash
 composer install --optimize-autoloader --no-dev
@@ -122,30 +127,22 @@ php artisan route:cache
 php artisan view:cache
 ```
 
-### 2. Set Environment
+Update `.env`:
 
-Edit `.env`:
 ```env
 APP_ENV=production
 APP_DEBUG=false
-APP_URL=https://yourdomain.com
 ```
 
-### 3. Web Server
+Point your web server to the `public` folder. The `.htaccess` file is already set up for Apache.
 
-Point document root ke folder `public/`
+For Nginx:
 
-**Laragon**: Sudah otomatis setup, akses via `http://task.test`
-
-**Apache Manual**: `.htaccess` sudah include di folder `public/`
-
-**Nginx**:
 ```nginx
 server {
     listen 80;
     server_name yourdomain.com;
     root /path/to/task/public;
-    
     index index.php;
     
     location / {
@@ -160,87 +157,49 @@ server {
 }
 ```
 
-### 4. Set Permissions
+## Common Issues
 
-```bash
-# Linux/Mac:
-chmod -R 775 storage bootstrap/cache
-chown -R www-data:www-data storage bootstrap/cache
+**Can't connect to database**: Check if MySQL is running and your credentials in `.env` are correct.
 
-# Windows (Laragon): biasanya tidak perlu, tapi jika ada error:
-# Klik kanan folder storage > Properties > Security > Edit
-# Berikan Full Control untuk user Anda
+**Assets not loading**: Run `npm run build` and clear the cache with `php artisan view:clear`.
+
+**Permission errors**: On Linux/Mac, run `chmod -R 775 storage bootstrap/cache`. On Windows, usually not needed.
+
+## Project Structure
+
+```
+app/
+├── Http/Controllers/    # Request handlers
+├── Models/              # Database models
+└── Http/Requests/       # Form validation
+
+resources/views/         # Blade templates
+routes/web.php          # Routes
+database/migrations/    # Database schema
 ```
 
-### 5. SSL (Recommended)
+## Security
 
-```bash
-certbot --nginx -d yourdomain.com
-```
+The app includes CSRF protection, XSS prevention, and SQL injection protection out of the box. All user input is validated and sanitized.
 
-## Troubleshooting
+## Responsive Design
 
-**Port sudah dipakai (Laragon):**
-```bash
-# Ganti port di Laragon: Menu > Preferences > General
-# Atau stop service lain yang pakai port 80/443
-```
+The application is fully responsive and optimized for:
+- **Mobile devices** (320px - 576px): Hamburger menu, stacked layout, touch-friendly buttons
+- **Tablets** (577px - 768px): Optimized spacing and font sizes
+- **Desktops** (769px+): Full layout with all features
 
-**Permission error:**
-```bash
-chmod -R 775 storage bootstrap/cache
-# Atau di Windows: klik kanan folder > Properties > Security
-```
-
-**Assets tidak muncul:**
-```bash
-npm run build
-php artisan view:clear
-```
-
-**Database error:**
-```bash
-# Pastikan MySQL di Laragon sudah running
-# Cek di HeidiSQL apakah database task_management ada
-php artisan config:clear
-php artisan migrate:fresh --seed
-```
-
-**500 Error:**
-```bash
-# Cek log error
-tail -f storage/logs/laravel.log
-# Atau buka file: storage/logs/laravel.log
-```
-
-## Fitur Keamanan
-
-- CSRF protection pada semua form
-- XSS prevention (input sanitization)
-- SQL injection prevention (Eloquent ORM)
-- Security headers (CSP, X-Frame-Options, HSTS)
-- Input validation server-side
-- Mass assignment protection
-
-## Code Quality
-
-- PSR-12 coding standards
-- SOLID principles
-- Laravel best practices
-- PHPDoc comments
-- Type hints & return types
-- Clean, readable code
-
-## Testing
-
-```bash
-php artisan test
-```
+Key responsive features:
+- Collapsible navigation menu on mobile
+- Touch-friendly drag & drop on mobile devices
+- Adaptive form layouts
+- Responsive wizard steps (horizontal on desktop, vertical on mobile)
+- Optimized button sizes and spacing for touch screens
 
 ## License
 
-MIT License
+MIT
 
 ---
 
-**Built with Laravel 11**
+Built with Laravel
