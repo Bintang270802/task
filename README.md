@@ -1,66 +1,246 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Task Management Application
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Aplikasi manajemen task sederhana dengan fitur drag & drop untuk mengatur prioritas task.
 
-## About Laravel
+## Fitur
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- ✅ Buat, edit, dan hapus task
+- ✅ Kelompokkan task berdasarkan project
+- ✅ Drag & drop untuk mengatur urutan prioritas
+- ✅ Form wizard 2 langkah untuk membuat task
+- ✅ Desain responsive dan profesional
+- ✅ Keamanan tingkat enterprise (CSRF, XSS protection)
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Teknologi
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- Laravel 11.31
+- PHP 8.3
+- Bootstrap 5.3
+- MySQL (Laragon)
 
-## Learning Laravel
+## Instalasi
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### Untuk Pengguna Laragon
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+1. Pastikan Laragon sudah running (Apache & MySQL)
+2. Letakkan folder `task` di `C:\laragon\www\`
+3. Buka terminal Laragon (klik kanan icon Laragon > Terminal)
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### 1. Install Dependencies
 
-## Laravel Sponsors
+```bash
+composer install
+npm install
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### 2. Setup Environment
 
-### Premium Partners
+```bash
+cp .env.example .env
+php artisan key:generate
+```
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+### 3. Setup Database
 
-## Contributing
+```bash
+# Edit .env untuk MySQL (Laragon):
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=task_management
+DB_USERNAME=root
+DB_PASSWORD=
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+# Buat database:
+# Cara 1: Lewat HeidiSQL (klik icon database di Laragon)
+# Cara 2: Lewat phpMyAdmin (http://localhost/phpmyadmin)
+# Cara 3: Lewat terminal:
+mysql -u root -e "CREATE DATABASE task_management"
 
-## Code of Conduct
+# Jalankan migration
+php artisan migrate
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### 4. Seed Data (Opsional)
 
-## Security Vulnerabilities
+```bash
+php artisan db:seed
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Ini akan membuat 5 project dan 15 task contoh.
+
+### 5. Build Assets & Jalankan
+
+```bash
+# Build assets
+npm run dev
+
+# Jalankan server (pilih salah satu):
+# 1. Pakai Laragon: klik Start All, akses via http://task.test
+# 2. Manual: php artisan serve
+```
+
+Buka: **http://localhost:8000/task** atau **http://task.test** (jika pakai Laragon)
+
+## Cara Pakai
+
+1. **Buat Task**: Klik tombol "Add New Task", isi nama task, pilih project (opsional), review, lalu save
+2. **Edit Task**: Klik icon pensil pada task yang ingin diedit
+3. **Hapus Task**: Klik icon tempat sampah (akan ada konfirmasi)
+4. **Reorder Task**: Drag & drop task menggunakan handle (⋮⋮) di sebelah kiri
+5. **Buat Project**: Di halaman Projects, klik "Add New Project"
+
+## Struktur Folder
+
+```
+task/
+├── app/
+│   ├── Http/
+│   │   ├── Controllers/      # TaskController, ProjectController
+│   │   ├── Middleware/       # SecurityHeaders
+│   │   └── Requests/         # Form validation
+│   └── Models/               # Task, Project
+├── database/
+│   ├── migrations/           # Schema database
+│   └── seeders/              # Data contoh
+├── resources/
+│   └── views/                # Blade templates
+├── routes/
+│   └── web.php               # Route aplikasi
+└── public/                   # Assets
+```
+
+## Deploy ke Production
+
+### 1. Optimize
+
+```bash
+composer install --optimize-autoloader --no-dev
+npm run build
+php artisan config:cache
+php artisan route:cache
+php artisan view:cache
+```
+
+### 2. Set Environment
+
+Edit `.env`:
+```env
+APP_ENV=production
+APP_DEBUG=false
+APP_URL=https://yourdomain.com
+```
+
+### 3. Web Server
+
+Point document root ke folder `public/`
+
+**Laragon**: Sudah otomatis setup, akses via `http://task.test`
+
+**Apache Manual**: `.htaccess` sudah include di folder `public/`
+
+**Nginx**:
+```nginx
+server {
+    listen 80;
+    server_name yourdomain.com;
+    root /path/to/task/public;
+    
+    index index.php;
+    
+    location / {
+        try_files $uri $uri/ /index.php?$query_string;
+    }
+    
+    location ~ \.php$ {
+        fastcgi_pass 127.0.0.1:9000;
+        fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
+        include fastcgi_params;
+    }
+}
+```
+
+### 4. Set Permissions
+
+```bash
+# Linux/Mac:
+chmod -R 775 storage bootstrap/cache
+chown -R www-data:www-data storage bootstrap/cache
+
+# Windows (Laragon): biasanya tidak perlu, tapi jika ada error:
+# Klik kanan folder storage > Properties > Security > Edit
+# Berikan Full Control untuk user Anda
+```
+
+### 5. SSL (Recommended)
+
+```bash
+certbot --nginx -d yourdomain.com
+```
+
+## Troubleshooting
+
+**Port sudah dipakai (Laragon):**
+```bash
+# Ganti port di Laragon: Menu > Preferences > General
+# Atau stop service lain yang pakai port 80/443
+```
+
+**Permission error:**
+```bash
+chmod -R 775 storage bootstrap/cache
+# Atau di Windows: klik kanan folder > Properties > Security
+```
+
+**Assets tidak muncul:**
+```bash
+npm run build
+php artisan view:clear
+```
+
+**Database error:**
+```bash
+# Pastikan MySQL di Laragon sudah running
+# Cek di HeidiSQL apakah database task_management ada
+php artisan config:clear
+php artisan migrate:fresh --seed
+```
+
+**500 Error:**
+```bash
+# Cek log error
+tail -f storage/logs/laravel.log
+# Atau buka file: storage/logs/laravel.log
+```
+
+## Fitur Keamanan
+
+- CSRF protection pada semua form
+- XSS prevention (input sanitization)
+- SQL injection prevention (Eloquent ORM)
+- Security headers (CSP, X-Frame-Options, HSTS)
+- Input validation server-side
+- Mass assignment protection
+
+## Code Quality
+
+- PSR-12 coding standards
+- SOLID principles
+- Laravel best practices
+- PHPDoc comments
+- Type hints & return types
+- Clean, readable code
+
+## Testing
+
+```bash
+php artisan test
+```
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+MIT License
+
+---
+
+**Built with Laravel 11**
