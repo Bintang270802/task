@@ -506,61 +506,13 @@
             }
         }
 
-        /* Saving Indicator */
-        .saving-indicator {
-            position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            background: var(--primary-color);
-            color: white;
-            padding: 1rem 1.5rem;
-            border-radius: 4px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-            z-index: 1000;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            font-weight: 600;
-            animation: slideInRight 0.3s ease;
-        }
-
-        .saving-indicator.success {
-            background: var(--success-color);
-        }
-
-        .saving-indicator.error {
-            background: var(--danger-color);
-        }
-
-        @keyframes slideInRight {
-            from {
-                opacity: 0;
-                transform: translateX(100px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        .spin {
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            from {
-                transform: rotate(0deg);
-            }
-            to {
-                transform: rotate(360deg);
-            }
-        }
-
         /* Enhanced drag state */
         .task-card.dragging {
-            opacity: 0.5;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.25);
-            transform: rotate(2deg);
+            opacity: 0.6;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.3);
+            transform: scale(1.02);
+            border-left-color: var(--accent-color);
+            border-left-width: 4px;
         }
 
         /* Drop zone indicator */
@@ -596,7 +548,7 @@
             }
         }
 
-        /* Enhanced Form Styles */
+        /* Breadcrumb */
         .breadcrumb {
             background: transparent;
             padding: 0;
@@ -616,83 +568,6 @@
             color: var(--text-secondary);
         }
 
-        .progress-steps {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 1.5rem;
-            background: white;
-            border: 1px solid #dee2e6;
-            border-radius: 4px;
-        }
-
-        .step {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .step-number {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: #e2e8f0;
-            color: var(--text-secondary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 1.1rem;
-        }
-
-        .step.active .step-number {
-            background: var(--accent-color);
-            color: white;
-        }
-
-        .step-label {
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-            font-weight: 600;
-        }
-
-        .step.active .step-label {
-            color: var(--accent-color);
-        }
-
-        .step-line {
-            width: 100px;
-            height: 2px;
-            background: #e2e8f0;
-            margin: 0 1rem;
-        }
-
-        .form-card {
-            box-shadow: 0 2px 12px rgba(0,0,0,0.1);
-        }
-
-        .required-badge {
-            float: right;
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            font-weight: normal;
-        }
-
-        .form-group-enhanced {
-            position: relative;
-        }
-
-        .form-control-enhanced {
-            padding: 0.75rem 1rem;
-            font-size: 1rem;
-        }
-
-        .form-control-enhanced:focus {
-            border-color: var(--accent-color);
-            box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.15);
-        }
-
         .form-helper {
             display: flex;
             justify-content: space-between;
@@ -703,24 +578,14 @@
             font-weight: 600;
         }
 
-        .btn-enhanced {
-            padding: 0.65rem 1.5rem;
-            font-weight: 600;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: all 0.2s ease;
+        .required-badge {
+            float: right;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            font-weight: normal;
         }
 
-        .btn-enhanced:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-        }
-
-        .action-buttons {
-            margin-top: 1rem;
-        }
-
+        /* Help Cards */
         .help-card {
             background: #f8f9fa;
             border: 1px solid #dee2e6;
@@ -796,60 +661,27 @@
             color: var(--primary-color);
         }
 
-        /* Stats Card */
-        .stat-item {
-            padding: 0.5rem 0;
-        }
-
-        .stat-number {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: var(--accent-color);
-            line-height: 1;
-        }
-
-        .stat-label {
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-            margin-top: 0.5rem;
-            font-weight: 600;
-        }
-
-        /* Delete Button in Form */
-        .btn-outline-danger:hover {
-            background: var(--danger-color);
-            border-color: var(--danger-color);
-            color: white;
-        }
-
-        /* Responsive Form */
+        /* Responsive */
         @media (max-width: 768px) {
-            .progress-steps {
+            .page-header {
+                text-align: center;
+            }
+
+            .page-title {
+                font-size: 1.5rem;
+                justify-content: center;
+            }
+
+            .task-card {
                 padding: 1rem;
             }
 
-            .step-line {
-                width: 50px;
-            }
-
-            .step-label {
-                font-size: 0.8rem;
+            .navbar-brand {
+                font-size: 1.25rem;
             }
 
             .help-card {
                 margin-bottom: 1rem;
-            }
-
-            .action-buttons {
-                flex-direction: column;
-            }
-
-            .action-buttons .btn {
-                width: 100%;
-            }
-
-            .action-buttons .ms-auto {
-                margin-left: 0 !important;
             }
         }
 
@@ -1056,6 +888,154 @@
 
             .review-item {
                 padding: 1rem;
+            }
+        }
+
+        /* Toast Notification */
+        .toast-notification {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: white;
+            border: 1px solid #dee2e6;
+            border-left: 4px solid var(--accent-color);
+            border-radius: 4px;
+            padding: 1rem 1.5rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            z-index: 1050;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            min-width: 300px;
+            animation: slideInRight 0.3s ease;
+        }
+
+        .toast-notification.success {
+            border-left-color: var(--success-color);
+        }
+
+        .toast-notification.info {
+            border-left-color: var(--accent-color);
+        }
+
+        .toast-notification.warning {
+            border-left-color: #f39c12;
+        }
+
+        .toast-notification.error {
+            border-left-color: var(--danger-color);
+        }
+
+        .toast-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            flex-shrink: 0;
+        }
+
+        .toast-notification.success .toast-icon {
+            background: rgba(39, 174, 96, 0.1);
+            color: var(--success-color);
+        }
+
+        .toast-notification.info .toast-icon {
+            background: rgba(52, 152, 219, 0.1);
+            color: var(--accent-color);
+        }
+
+        .toast-notification.warning .toast-icon {
+            background: rgba(243, 156, 18, 0.1);
+            color: #f39c12;
+        }
+
+        .toast-notification.error .toast-icon {
+            background: rgba(192, 57, 43, 0.1);
+            color: var(--danger-color);
+        }
+
+        .toast-content {
+            flex: 1;
+        }
+
+        .toast-title {
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 0.25rem;
+            font-size: 0.95rem;
+        }
+
+        .toast-message {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            margin: 0;
+        }
+
+        .toast-close {
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 0.25rem;
+            font-size: 1.25rem;
+            line-height: 1;
+            transition: all 0.2s ease;
+        }
+
+        .toast-close:hover {
+            color: var(--danger-color);
+            transform: scale(1.1);
+        }
+
+        @keyframes slideOutDown {
+            from {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            to {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+        }
+
+        /* Drag placeholder */
+        .drag-placeholder {
+            border: 2px dashed var(--accent-color);
+            background: rgba(52, 152, 219, 0.05);
+            border-radius: 4px;
+            height: 80px;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent-color);
+            font-weight: 600;
+        }
+
+        .drag-placeholder i {
+            margin-right: 0.5rem;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.5;
+            }
+        }
+
+        /* Mobile toast */
+        @media (max-width: 768px) {
+            .toast-notification {
+                bottom: 1rem;
+                right: 1rem;
+                left: 1rem;
+                min-width: auto;
             }
         }
     </style>

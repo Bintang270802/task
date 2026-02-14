@@ -64,7 +64,7 @@
     @forelse($tasks as $task)
         <div class="task-card" data-id="{{ $task->id }}" draggable="true">
             <div class="d-flex align-items-start">
-                <div class="drag-handle me-3" data-bs-toggle="tooltip" data-bs-placement="left" title="Drag to reorder">
+                <div class="drag-handle me-3">
                     <i class="bi bi-grip-vertical fs-4"></i>
                     <div class="drag-hint">
                         <i class="bi bi-arrows-move"></i>
@@ -145,6 +145,39 @@
 
 @push('scripts')
 <script>
+    // Toast Notification Function
+    function showToast(type, title, message, duration = 3000) {
+        const toast = document.createElement('div');
+        toast.className = `toast-notification ${type}`;
+        
+        const iconMap = {
+            success: 'bi-check-circle-fill',
+            info: 'bi-info-circle-fill',
+            warning: 'bi-exclamation-triangle-fill',
+            error: 'bi-x-circle-fill'
+        };
+        
+        toast.innerHTML = `
+            <div class="toast-icon">
+                <i class="bi ${iconMap[type]}"></i>
+            </div>
+            <div class="toast-content">
+                <div class="toast-title">${title}</div>
+                <p class="toast-message">${message}</p>
+            </div>
+            <button class="toast-close" onclick="this.parentElement.remove()">
+                <i class="bi bi-x"></i>
+            </button>
+        `;
+        
+        document.body.appendChild(toast);
+        
+        setTimeout(() => {
+            toast.style.animation = 'slideOutDown 0.3s ease';
+            setTimeout(() => toast.remove(), 300);
+        }, duration);
+    }
+
     // Initialize tooltips
     const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
     const tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
@@ -193,6 +226,8 @@
     const taskList = document.getElementById('task-list');
     const taskCards = document.querySelectorAll('.task-card');
     let draggedElement = null;
+    let dragStartPosition = null;
+    let hasMoved = false;
 
     taskCards.forEach(card => {
         const dragHandle = card.querySelector('.drag-handle');
@@ -216,6 +251,9 @@
 
         card.addEventListener('dragstart', function(e) {
             draggedElement = this;
+            dragStartPosition = Array.from(taskList.children).indexOf(this);
+            hasMoved = false;
+            
             this.classList.add('dragging');
             e.dataTransfer.effectAllowed = 'move';
             
@@ -227,7 +265,21 @@
 
         card.addEventListener('dragend', function() {
             this.classList.remove('dragging');
+            
+            const currentPosition = Array.from(taskList.children).indexOf(this);
+            
+            // Check if position changed
+            if (dragStartPosition !== currentPosition) {
+                hasMoved = true;
+            }
+            
+            // Show notification if drag was cancelled (no movement)
+            if (!hasMoved && dragStartPosition === currentPosition) {
+                showToast('info', 'Drag Cancelled', 'Task order was not changed. Drag to a new position to reorder tasks.');
+            }
+            
             draggedElement = null;
+            dragStartPosition = null;
             
             // Show hints again
             document.querySelectorAll('.drag-hint').forEach(hint => {
@@ -237,6 +289,8 @@
 
         card.addEventListener('dragover', function(e) {
             e.preventDefault();
+            hasMoved = true; // Mark as moved when dragging over other elements
+            
             const afterElement = getDragAfterElement(taskList, e.clientY);
             if (afterElement == null) {
                 taskList.appendChild(draggedElement);
@@ -263,13 +317,12 @@
 
     // Save new order when drag ends
     taskList.addEventListener('dragend', function() {
+        if (!hasMoved) return; // Don't save if nothing moved
+        
         const taskIds = [...document.querySelectorAll('.task-card')].map(card => card.dataset.id);
         
-        // Show saving indicator
-        const savingIndicator = document.createElement('div');
-        savingIndicator.className = 'saving-indicator';
-        savingIndicator.innerHTML = '<i class="bi bi-arrow-repeat spin"></i> Saving order...';
-        document.body.appendChild(savingIndicator);
+        // Show saving toast
+        showToast('info', 'Saving...', 'Updating task order', 1500);
         
         fetch('{{ route("tasks.reorder") }}', {
             method: 'POST',
@@ -288,21 +341,13 @@
                     badge.textContent = `Priority ${index + 1}`;
                 });
                 
-                // Show success indicator
-                savingIndicator.innerHTML = '<i class="bi bi-check-circle-fill"></i> Order saved!';
-                savingIndicator.classList.add('success');
-                
-                setTimeout(() => {
-                    savingIndicator.style.animation = 'slideUp 0.3s ease';
-                    setTimeout(() => savingIndicator.remove(), 300);
-                }, 1500);
+                // Show success toast
+                showToast('success', 'Order Saved!', 'Task priorities have been updated successfully.');
             }
         })
         .catch(error => {
             console.error('Error:', error);
-            savingIndicator.innerHTML = '<i class="bi bi-exclamation-circle-fill"></i> Failed to save';
-            savingIndicator.classList.add('error');
-            setTimeout(() => savingIndicator.remove(), 2000);
+            showToast('error', 'Save Failed', 'Could not save the new task order. Please try again.');
         });
     });
 </script>
