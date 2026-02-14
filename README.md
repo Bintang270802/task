@@ -32,7 +32,7 @@ Simple task manager with drag & drop built using Laravel 11.
 
 ### Prerequisites
 
-Make sure you have PHP 8.3, Composer, Node.js, and MySQL installed. I'm using Laragon on Windows.
+Make sure you have PHP 8.3, Composer,MySQL installed. I'm using Laragon on Windows.
 
 ### Installation
 
@@ -63,7 +63,7 @@ DB_PASSWORD=
 Create the database (use HeidiSQL, phpMyAdmin, or terminal):
 
 ```bash
-mysql -u root -e "CREATE DATABASE task_management"
+mysql -u root -e "CREATE DATABASE laravel"
 ```
 
 Run migrations:
@@ -196,10 +196,3 @@ Key responsive features:
 - Responsive wizard steps (horizontal on desktop, vertical on mobile)
 - Optimized button sizes and spacing for touch screens
 
-## License
-
-MIT
-
----
-
-Built with Laravel
